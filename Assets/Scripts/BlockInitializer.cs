@@ -5,24 +5,28 @@ using UnityEngine.UI;
 public class BlockInitializer : MonoBehaviour
 {
     [SerializeField] private int maxBombNumber = 15;
-    private bool isInitiallized = false;
+    [SerializeField] private int rowCount = 9;
+    [SerializeField] private int colCount = 9;
+    private GameObject[,] blocks;
+
+    [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject blockPrefab;
-    private GameObject[,] blocks = new GameObject[9, 9];
     [SerializeField] private Sprite[] numberSprites;
     [SerializeField] private Sprite bombSprite;
     void Start()
     {
-        for(int row = 0; row < 9; row++)
+        blocks = new GameObject[rowCount, colCount];
+        grid.constraintCount = colCount;
+
+        for(int row = 0; row < rowCount; row++)
         {
-            for(int col = 0; col < 9; col++)
+            for(int col = 0; col < colCount; col++)
             {
                 GameObject currentBlock = Instantiate(blockPrefab, transform);
                 currentBlock.name = $"Block({row}, {col})";
                 blocks[row, col] = currentBlock;
             }
         }
-
-        isInitiallized = true;
     }
 
     void Update()
@@ -39,8 +43,8 @@ public class BlockInitializer : MonoBehaviour
 
         while(currentBombs <= maxBombNumber)
         {
-            int randomNumberRow = Random.Range(0, 9);
-            int randomNumberCol = Random.Range(0, 9);
+            int randomNumberRow = Random.Range(0, rowCount);
+            int randomNumberCol = Random.Range(0, colCount);
 
             if (!blocks[randomNumberRow, randomNumberCol].CompareTag("Bomb"))
             {
@@ -54,9 +58,9 @@ public class BlockInitializer : MonoBehaviour
                 int maxCol = randomNumberCol + 1;
 
                 if (randomNumberRow == 0) startRow += 1;
-                if (randomNumberRow == 8) maxRow -= 1;
+                if (randomNumberRow == rowCount - 1) maxRow -= 1;
                 if (randomNumberCol == 0) startCol += 1;
-                if (randomNumberCol == 8) maxCol -= 1;
+                if (randomNumberCol == colCount - 1) maxCol -= 1;
 
                 for(int row = startRow; row <= maxRow; row++)
                 {
@@ -70,9 +74,9 @@ public class BlockInitializer : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < rowCount; i++)
         {
-            for (int j = 0; j < 9; j++)
+            for (int j = 0; j < colCount; j++)
             {
                 if(blocks[i, j].tag != "Bomb")
                 {
