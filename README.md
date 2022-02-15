@@ -1,2 +1,2 @@
-# Minesweeper-3.0
+# Minesweeper
  minesweeper in unity, currently in development
