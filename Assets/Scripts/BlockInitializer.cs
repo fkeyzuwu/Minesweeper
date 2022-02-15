@@ -14,7 +14,9 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject blockPrefab;
     [SerializeField] private Sprite[] numberSprites;
+    [SerializeField] private Sprite unrevealedSprite;
     [SerializeField] private Sprite bombSprite;
+    [SerializeField] private Sprite flagSprite;
 
     void Start()
     {
@@ -54,7 +56,7 @@ public class BlockInitializer : MonoBehaviour
             {
                 Block bomb = blocks[randomNumberRow, randomNumberCol];
                 bomb.isBomb = true;
-                bomb.blockImage.sprite = bombSprite;
+                bomb.blockContentImage.sprite = bombSprite;
 
                 int startRow = randomNumberRow - 1;
                 int maxRow = randomNumberRow + 1;
@@ -84,13 +86,13 @@ public class BlockInitializer : MonoBehaviour
             {
                 if (!blocks[i, j].isBomb)
                 {
-                    blocks[i, j].blockImage.sprite = numberSprites[blocks[i, j].bombsAround];
+                    blocks[i, j].blockContentImage.sprite = numberSprites[blocks[i, j].bombsAround];
                 }
             }
         }
     }
 
-    public void RevealBlock(int blockRow, int blockCol)
+    public void RevealBlocks3x3(int blockRow, int blockCol)
     {
         int startRow = blockRow - 1;
         int maxRow = blockRow + 1;
@@ -106,10 +108,33 @@ public class BlockInitializer : MonoBehaviour
         {
             for (int col = startCol; col <= maxCol; col++)
             {
-                //check for bombs that arent flagged
+                if (blocks[row, col].isFlagged) continue;
+                if (blocks[row, col].isBomb) 
+                {
+                    RevealAllBlocks();
+                }
                 //check if there are empty spaces, if so then open them
-                blocks[row, col].SetBlockContent(true);
+                RevealBlock(row, col);
             }
+        }
+    }
+    public void RevealBlock(int blockRow, int blockCol)
+    {
+        blocks[blockRow, blockCol].SetBlockContent(true);
+    }
+
+    public void FlagBlock(int row, int col)
+    {
+        Block block = blocks[row, col];
+        block.isFlagged = !block.isFlagged;
+
+        if (block.isFlagged)
+        {
+            block.blockImage.sprite = flagSprite;
+        }
+        else
+        {
+            block.blockImage.sprite = unrevealedSprite;
         }
     }
 
