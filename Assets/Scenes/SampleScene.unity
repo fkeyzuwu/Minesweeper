@@ -197,8 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBombNumber: 15
-  rowCount: 16
-  colCount: 16
+  rowCount: 9
+  colCount: 9
   grid: {fileID: 399795549}
   blockPrefab: {fileID: 7853137158837494159, guid: 9ab76ec1f1966d548a878403a64cd475, type: 3}
   numberSprites:

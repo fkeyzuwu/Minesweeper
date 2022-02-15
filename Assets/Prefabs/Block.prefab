@@ -164,4 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a02069738e94c7247bf331fad8125b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombsAround: 0
   blockContent: {fileID: 326621703}
+  blockImage: {fileID: 326621705}

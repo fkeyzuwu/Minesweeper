@@ -8,7 +8,9 @@ using UnityEngine.EventSystems;
 public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public int bombsAround;
+    public bool isBomb = false;
     [SerializeField] private GameObject blockContent;
+    [SerializeField] public Image blockImage;
 
     public void OnPointerDown(PointerEventData eventData)
     {

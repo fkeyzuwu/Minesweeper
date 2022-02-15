@@ -7,7 +7,7 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private int maxBombNumber = 15;
     [SerializeField] private int rowCount = 9;
     [SerializeField] private int colCount = 9;
-    private GameObject[,] blocks;
+    private Block[,] blocks;
 
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject blockPrefab;
@@ -15,7 +15,7 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private Sprite bombSprite;
     void Start()
     {
-        blocks = new GameObject[rowCount, colCount];
+        blocks = new Block[rowCount, colCount];
         grid.constraintCount = colCount;
 
         for(int row = 0; row < rowCount; row++)
@@ -24,7 +24,7 @@ public class BlockInitializer : MonoBehaviour
             {
                 GameObject currentBlock = Instantiate(blockPrefab, transform);
                 currentBlock.name = $"Block({row}, {col})";
-                blocks[row, col] = currentBlock;
+                blocks[row, col] = currentBlock.GetComponent<Block>();
             }
         }
     }
@@ -46,11 +46,11 @@ public class BlockInitializer : MonoBehaviour
             int randomNumberRow = Random.Range(0, rowCount);
             int randomNumberCol = Random.Range(0, colCount);
 
-            if (!blocks[randomNumberRow, randomNumberCol].CompareTag("Bomb"))
+            if (!blocks[randomNumberRow, randomNumberCol].isBomb)
             {
-                GameObject bomb = blocks[randomNumberRow, randomNumberCol];
-                bomb.tag = "Bomb";
-                bomb.transform.GetChild(0).GetComponent<Image>().sprite = bombSprite;
+                Block bomb = blocks[randomNumberRow, randomNumberCol];
+                bomb.isBomb = true;
+                bomb.blockImage.sprite = bombSprite;
 
                 int startRow = randomNumberRow - 1;
                 int maxRow = randomNumberRow + 1;
@@ -66,7 +66,7 @@ public class BlockInitializer : MonoBehaviour
                 {
                     for(int col = startCol; col <= maxCol; col++)
                     {
-                        blocks[row, col].GetComponent<Block>().bombsAround++;
+                        blocks[row, col].bombsAround++;
                     }
                 }
 
@@ -78,11 +78,9 @@ public class BlockInitializer : MonoBehaviour
         {
             for (int j = 0; j < colCount; j++)
             {
-                if(blocks[i, j].tag != "Bomb")
+                if(!blocks[i, j].isBomb)
                 {
-                    Transform block = blocks[i, j].transform;
-                    int bombsAround = block.GetComponent<Block>().bombsAround;
-                    block.GetChild(0).GetComponent<Image>().sprite = numberSprites[bombsAround];
+                    blocks[i, j].blockImage.sprite = numberSprites[blocks[i, j].bombsAround];
                 }
             }
         }
