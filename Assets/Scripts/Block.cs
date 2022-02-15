@@ -7,10 +7,15 @@ using UnityEngine.EventSystems;
 
 public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    public int row;
+    public int col;
+
     public int bombsAround;
     public bool isBomb = false;
     [SerializeField] private GameObject blockContent;
     [SerializeField] public Image blockImage;
+
+    private bool isHovering = false;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -19,16 +24,31 @@ public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPo
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        isHovering = true;
         //ui
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        isHovering = false;
         //ui
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        blockContent.SetActive(true);
+        if (!isHovering) return;
+
+        if (isBomb)
+        {
+            BlockInitializer.instance.RevealAllBlocks(); //gameover
+            return;
+        }
+
+        BlockInitializer.instance.RevealBlock(row, col);
+    }
+
+    public void SetBlockContent(bool active)
+    {
+        blockContent.SetActive(active);
     }
 }
