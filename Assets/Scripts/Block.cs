@@ -35,10 +35,14 @@ public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPo
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (isRevealed && eventData.clickCount == 2)
+        if (isRevealed && eventData.clickCount == 2 && bombsAround != 0 && BlockInitializer.instance.CheckFlagsCount(row,col))
         {
             //doubleclicked
             BlockInitializer.instance.RevealBlocks3x3(row, col);
+        }
+        else
+        {
+            //do ui thingy
         }
     }
 
@@ -48,6 +52,11 @@ public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPo
 
         if (eventData.button == PointerEventData.InputButton.Right) return;
 
+        if (!BlockInitializer.instance.isInitialized)
+        {
+            BlockInitializer.instance.InitiallizeBlocks(row, col);
+        }
+
         if (isBomb)
         {
             BlockInitializer.instance.RevealAllBlocks(); //gameover
@@ -56,14 +65,21 @@ public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPo
 
         if (!isRevealed)
         {
-            BlockInitializer.instance.RevealBlock(row, col);
+            if(bombsAround == 0)
+            {
+                BlockInitializer.instance.RevealEmptyBlocks(row, col);
+            }
+            else
+            {
+                BlockInitializer.instance.RevealBlock(row, col);
+            }
         }
     }
 
     public void SetBlockContent(bool active)
     {
         blockContent.SetActive(active);
-        isRevealed = true;
+        isRevealed = active;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -211,7 +211,10 @@ MonoBehaviour:
   - {fileID: 8266258911003420344, guid: e29bfa3bd27138b409b74060f02e0889, type: 3}
   - {fileID: 4755373664117421245, guid: e29bfa3bd27138b409b74060f02e0889, type: 3}
   - {fileID: 778136270091268006, guid: e29bfa3bd27138b409b74060f02e0889, type: 3}
+  unrevealedSprite: {fileID: 21300000, guid: 7cbdd9299fbeb4245bd3b267fe40f1e2, type: 3}
   bombSprite: {fileID: 21300000, guid: ecfdee743684be3429782c5c2702c702, type: 3}
+  flagSprite: {fileID: 21300000, guid: 3f565b1a159085c4483612dcd471a189, type: 3}
+  isInitialized: 0
 --- !u!1 &433984547
 GameObject:
   m_ObjectHideFlags: 0

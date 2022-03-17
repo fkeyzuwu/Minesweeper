@@ -18,6 +18,8 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private Sprite bombSprite;
     [SerializeField] private Sprite flagSprite;
 
+    public bool isInitialized = false;
+
     void Start()
     {
         if (instance == null)
@@ -39,18 +41,59 @@ public class BlockInitializer : MonoBehaviour
                 blocks[row, col].col = col;
             }
         }
-
-        InitiallizeBlocks();
     }
 
-    private void InitiallizeBlocks()
+    void Update()
     {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            ResetBlocks();
+        }
+    }
+
+    public void ResetBlocks()
+    {
+        for(int row = 0; row < rowCount; row++)
+        {
+            for (int col = 0; col < colCount; col++)
+            {
+                blocks[row, col].isBomb = false;
+                blocks[row, col].isFlagged = false;
+                blocks[row, col].isRevealed = false;
+                blocks[row, col].blockImage.sprite = unrevealedSprite;
+                blocks[row, col].bombsAround = 0;
+                blocks[row, col].blockContentImage.sprite = numberSprites[0];
+                blocks[row, col].SetBlockContent(false);
+            }
+        }
+
+        isInitialized = false;
+    }
+
+    public void InitiallizeBlocks(int blockRow, int blockCol)
+    {
+        isInitialized = true;
+
         int currentBombs = 0;
 
+        int topBorder = blockRow + 1;
+        int bottomBorder = blockRow - 1;
+        int rightBorder = blockCol + 1;
+        int leftBorder = blockCol - 1;
+
+        if (blockRow == 0) topBorder -= 1;
+        if (blockRow == rowCount - 1) bottomBorder += 1;
+        if (blockCol == 0) leftBorder += 1;
+        if (blockCol == colCount - 1) rightBorder -= 1;
+       
         while (currentBombs <= maxBombNumber)
         {
             int randomNumberRow = Random.Range(0, rowCount);
             int randomNumberCol = Random.Range(0, colCount);
+
+            bool isInRowBorder = randomNumberRow >= bottomBorder && randomNumberRow <= topBorder;
+            bool isInColBorder = randomNumberCol >= leftBorder && randomNumberCol <= rightBorder;
+            if (isInColBorder && isInRowBorder) continue;
 
             if (!blocks[randomNumberRow, randomNumberCol].isBomb)
             {
@@ -108,19 +151,79 @@ public class BlockInitializer : MonoBehaviour
         {
             for (int col = startCol; col <= maxCol; col++)
             {
-                if (blocks[row, col].isFlagged) continue;
-                if (blocks[row, col].isBomb) 
+                if (blocks[row, col].isFlagged || blocks[row, col].isRevealed) continue;
+
+                if (blocks[row, col].isBomb)
                 {
                     RevealAllBlocks();
+                    return;
                 }
-                //check if there are empty spaces, if so then open them
+
+                if (blocks[row,col].bombsAround == 0)
+                {
+                    RevealEmptyBlocks(row, col);
+                    continue;
+                }
+
                 RevealBlock(row, col);
             }
         }
     }
+
+    public bool CheckFlagsCount(int blockRow, int blockCol)
+    {
+        bool equalFlags = false;
+        int flagCount = 0;
+        int startRow = blockRow - 1;
+        int maxRow = blockRow + 1;
+        int startCol = blockCol - 1;
+        int maxCol = blockCol + 1;
+
+        if (blockRow == 0) startRow += 1;
+        if (blockRow == rowCount - 1) maxRow -= 1;
+        if (blockCol == 0) startCol += 1;
+        if (blockCol == colCount - 1) maxCol -= 1;
+
+        for (int row = startRow; row <= maxRow; row++)
+        {
+            for (int col = startCol; col <= maxCol; col++)
+            {
+                if (blocks[row, col].isFlagged) flagCount++;
+            }
+        }
+
+        if (blocks[blockRow, blockCol].bombsAround == flagCount) equalFlags = true;
+
+        return equalFlags;
+    }
     public void RevealBlock(int blockRow, int blockCol)
     {
         blocks[blockRow, blockCol].SetBlockContent(true);
+    }
+
+    public void RevealEmptyBlocks(int row, int col)
+    {
+        if (blocks[row, col].isRevealed) return;
+        RevealBlock(row, col);
+        if (blocks[row, col].bombsAround > 0) return;
+
+        int startRow = row - 1;
+        int maxRow = row + 1;
+        int startCol = col - 1;
+        int maxCol = col + 1;
+
+        if (row == 0) startRow += 1;
+        if (row == rowCount - 1) maxRow -= 1;
+        if (col == 0) startCol += 1;
+        if (col == colCount - 1) maxCol -= 1;
+
+        for(int i = startRow; i<=maxRow;i++)
+        {
+            for (int j = startCol; j <= maxCol; j++)
+            {
+                RevealEmptyBlocks(i, j);
+            }
+        }
     }
 
     public void FlagBlock(int row, int col)
