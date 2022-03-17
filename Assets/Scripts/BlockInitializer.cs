@@ -11,9 +11,13 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private int colCount = 9;
     private Block[,] blocks;
 
+    [SerializeField] private int revealedBlockCount = 0;
+    [SerializeField] private int blockCount { get => rowCount * colCount; }
+    [SerializeField] private int neededRevealedBlocksToWin { get => blockCount - maxBombNumber;}
+
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject blockPrefab;
-    [SerializeField] private Sprite[] numberSprites;
+    [SerializeField] private Sprite [] numberSprites;
     [SerializeField] private Sprite unrevealedSprite;
     [SerializeField] private Sprite bombSprite;
     [SerializeField] private Sprite flagSprite;
@@ -47,11 +51,11 @@ public class BlockInitializer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            ResetBlocks();
+            ResetGame();
         }
     }
 
-    public void ResetBlocks()
+    public void ResetGame()
     {
         for(int row = 0; row < rowCount; row++)
         {
@@ -67,6 +71,7 @@ public class BlockInitializer : MonoBehaviour
             }
         }
 
+        revealedBlockCount = 0;
         isInitialized = false;
     }
 
@@ -86,7 +91,7 @@ public class BlockInitializer : MonoBehaviour
         if (blockCol == 0) leftBorder += 1;
         if (blockCol == colCount - 1) rightBorder -= 1;
        
-        while (currentBombs <= maxBombNumber)
+        while (currentBombs < maxBombNumber)
         {
             int randomNumberRow = Random.Range(0, rowCount);
             int randomNumberCol = Random.Range(0, colCount);
@@ -199,6 +204,11 @@ public class BlockInitializer : MonoBehaviour
     public void RevealBlock(int blockRow, int blockCol)
     {
         blocks[blockRow, blockCol].SetBlockContent(true);
+        revealedBlockCount++;
+        if (revealedBlockCount == neededRevealedBlocksToWin)
+        {
+            Debug.Log("Game Over");
+        }
     }
 
     public void RevealEmptyBlocks(int row, int col)

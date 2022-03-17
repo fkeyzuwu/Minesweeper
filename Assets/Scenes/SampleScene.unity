@@ -196,9 +196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79098e5dacfdd34a810cd5394f333e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBombNumber: 15
+  maxBombNumber: 10
   rowCount: 9
   colCount: 9
+  revealedBlockCount: 0
   grid: {fileID: 399795549}
   blockPrefab: {fileID: 7853137158837494159, guid: 9ab76ec1f1966d548a878403a64cd475, type: 3}
   numberSprites:
