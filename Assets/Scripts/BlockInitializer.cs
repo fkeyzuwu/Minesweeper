@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BlockInitializer : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private Sprite unrevealedSprite;
     [SerializeField] private Sprite bombSprite;
     [SerializeField] private Sprite flagSprite;
+
+    [SerializeField] private GameObject restartGameButton;
+    [SerializeField] private TextMeshProUGUI endGameText;
 
     public bool isInitialized = false;
 
@@ -44,14 +48,6 @@ public class BlockInitializer : MonoBehaviour
                 blocks[row, col].row = row;
                 blocks[row, col].col = col;
             }
-        }
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            ResetGame();
         }
     }
 
@@ -160,7 +156,7 @@ public class BlockInitializer : MonoBehaviour
 
                 if (blocks[row, col].isBomb)
                 {
-                    RevealAllBlocks();
+                    GameOver(false);
                     return;
                 }
 
@@ -207,7 +203,7 @@ public class BlockInitializer : MonoBehaviour
         revealedBlockCount++;
         if (revealedBlockCount == neededRevealedBlocksToWin)
         {
-            Debug.Log("Game Over");
+            GameOver(true);
         }
     }
 
@@ -260,5 +256,12 @@ public class BlockInitializer : MonoBehaviour
                 blocks[row, col].SetBlockContent(true);
             }
         }
+    }
+
+    public void GameOver(bool win)
+    {
+        restartGameButton.SetActive(true);
+        endGameText.transform.parent.gameObject.SetActive(true);
+        endGameText.text = win == true ? "You Won!" : "You Lost!";
     }
 }

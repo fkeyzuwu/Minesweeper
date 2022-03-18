@@ -59,7 +59,7 @@ public class Block : MonoBehaviour , IPointerDownHandler ,IPointerUpHandler, IPo
 
         if (isBomb)
         {
-            BlockInitializer.instance.RevealAllBlocks(); //gameover
+            BlockInitializer.instance.GameOver(false);
             return;
         }
 
