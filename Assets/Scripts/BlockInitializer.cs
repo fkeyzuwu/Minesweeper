@@ -25,6 +25,7 @@ public class BlockInitializer : MonoBehaviour
 
     [SerializeField] private GameObject restartGameButton;
     [SerializeField] private TextMeshProUGUI endGameText;
+    [SerializeField] private Image endGameImage;
 
     public bool isInitialized = false;
 
@@ -263,5 +264,6 @@ public class BlockInitializer : MonoBehaviour
         restartGameButton.SetActive(true);
         endGameText.transform.parent.gameObject.SetActive(true);
         endGameText.text = win == true ? "You Won!" : "You Lost!";
+        endGameImage.color = win == true ? Color.green : Color.red;
     }
 }
