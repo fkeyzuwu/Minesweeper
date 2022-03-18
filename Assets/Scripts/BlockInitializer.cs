@@ -237,15 +237,7 @@ public class BlockInitializer : MonoBehaviour
     {
         Block block = blocks[row, col];
         block.isFlagged = !block.isFlagged;
-
-        if (block.isFlagged)
-        {
-            block.blockImage.sprite = flagSprite;
-        }
-        else
-        {
-            block.blockImage.sprite = unrevealedSprite;
-        }
+        block.blockImage.sprite = block.isFlagged ? flagSprite : unrevealedSprite;
     }
 
     public void RevealAllBlocks()
@@ -264,7 +256,7 @@ public class BlockInitializer : MonoBehaviour
         if (!win) RevealAllBlocks();
         restartGameButton.SetActive(true);
         endGameText.transform.parent.gameObject.SetActive(true);
-        endGameText.text = win == true ? "You Won!" : "You Lost!";
-        endGameImage.color = win == true ? Color.green : Color.red;
+        endGameText.text = win ? "You Won!" : "You Lost!";
+        endGameImage.color = win ? Color.green : Color.red;
     }
 }
