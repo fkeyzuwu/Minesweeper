@@ -261,6 +261,7 @@ public class BlockInitializer : MonoBehaviour
 
     public void GameOver(bool win)
     {
+        if (!win) RevealAllBlocks();
         restartGameButton.SetActive(true);
         endGameText.transform.parent.gameObject.SetActive(true);
         endGameText.text = win == true ? "You Won!" : "You Lost!";

@@ -587,7 +587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2422182594304306030, guid: adb39d8bfbfd6e44b85529d7fd328ea0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 260
+      value: 378
       objectReference: {fileID: 0}
     - target: {fileID: 2422182594304306030, guid: adb39d8bfbfd6e44b85529d7fd328ea0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -653,11 +653,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127429638289790340, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 3127429638289790340, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3127429638289790340, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -730,6 +730,14 @@ PrefabInstance:
     - target: {fileID: 3127429638289790343, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127429638479933088, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
+      propertyPath: m_fontSize
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127429638479933088, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a468945620ef57c439bf3e317f23d5f7, type: 3}
