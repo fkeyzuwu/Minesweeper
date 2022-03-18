@@ -7,14 +7,14 @@ public class BlockInitializer : MonoBehaviour
 {
     public static BlockInitializer instance;
 
-    [SerializeField] private int maxBombNumber = 15;
-    [SerializeField] private int rowCount = 9;
-    [SerializeField] private int colCount = 9;
+    [SerializeField] private int bombCount => GameData.bombCount;
+    [SerializeField] private int rowCount => GameData.rowCount;
+    [SerializeField] private int colCount => GameData.colCount;
     private Block[,] blocks;
 
     [SerializeField] private int revealedBlockCount = 0;
     [SerializeField] private int blockCount { get => rowCount * colCount; }
-    [SerializeField] private int neededRevealedBlocksToWin { get => blockCount - maxBombNumber;}
+    [SerializeField] private int neededRevealedBlocksToWin { get => blockCount - bombCount;}
 
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject blockPrefab;
@@ -88,7 +88,7 @@ public class BlockInitializer : MonoBehaviour
         if (blockCol == 0) leftBorder += 1;
         if (blockCol == colCount - 1) rightBorder -= 1;
        
-        while (currentBombs < maxBombNumber)
+        while (currentBombs < bombCount)
         {
             int randomNumberRow = Random.Range(0, rowCount);
             int randomNumberCol = Random.Range(0, colCount);
