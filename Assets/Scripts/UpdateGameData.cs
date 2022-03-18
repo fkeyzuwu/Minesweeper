@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class UpdateGameData : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI rowCountText;
-    [SerializeField] private TextMeshProUGUI colCountText;
-    [SerializeField] private TextMeshProUGUI bombCountText;
+    [SerializeField] private TMP_InputField rowCountText;
+    [SerializeField] private TMP_InputField colCountText;
+    [SerializeField] private TMP_InputField bombCountText;
     void Start()
     {
         rowCountText.text = GameData.rowCount.ToString();
@@ -16,40 +17,65 @@ public class UpdateGameData : MonoBehaviour
         bombCountText.text = GameData.bombCount.ToString();
     }
 
-    public void IncreaseRowCount()
+    public void Increase(string name)
     {
-        GameData.rowCount++;
-        Debug.Log(GameData.rowCount);
-        rowCountText.text = GameData.rowCount.ToString();
+        switch (name)
+        {
+            case "Row":
+                GameData.rowCount++;
+                rowCountText.text = GameData.rowCount.ToString();
+                break;
+            case "Col":
+                GameData.colCount++;
+                colCountText.text = GameData.colCount.ToString();
+                break;
+            case "Bomb":
+                GameData.bombCount++;
+                bombCountText.text = GameData.bombCount.ToString();
+                break;
+            default:
+                Debug.Log("probably fucked up a string Lamo");
+                break;
+        }
     }
 
-    public void DecreaseRowCount()
+    public void Decrease(string name)
     {
-        GameData.rowCount--;
-        rowCountText.text = GameData.rowCount.ToString();
+        switch (name)
+        {
+            case "Row":
+                GameData.rowCount--;
+                rowCountText.text = GameData.rowCount.ToString();
+                break;
+            case "Col":
+                GameData.colCount--;
+                colCountText.text = GameData.colCount.ToString();
+                break;
+            case "Bomb":
+                GameData.bombCount--;
+                bombCountText.text = GameData.bombCount.ToString();
+                break;
+            default:
+                Debug.Log("probably fucked up a string Lamo");
+                break;
+        }
     }
 
-    public void IncreaseColCount()
+    public void SetRowCount(string amount)
     {
-        GameData.colCount++;
-        colCountText.text = GameData.colCount.ToString();
+        int number;
+        GameData.rowCount = int.TryParse(amount, out number) ? number : 0;
     }
 
-    public void DecreaseColCount()
+    public void SetColCount(string amount)
     {
-        GameData.colCount--;
-        colCountText.text = GameData.colCount.ToString();
+        int number;
+        GameData.colCount = int.TryParse(amount, out number) ? number : 0;
     }
 
-    public void IncreaseBombCount()
+    public void SetBombCount(string amount)
     {
-        GameData.bombCount++;
-        bombCountText.text = GameData.bombCount.ToString();
-    }
-
-    public void DecreaseBombCount()
-    {
-        GameData.bombCount--;
-        bombCountText.text = GameData.bombCount.ToString();
+        int number;
+        GameData.bombCount = int.TryParse(amount, out number) ? number : 0;
     }
 }
