@@ -27,6 +27,8 @@ public class BlockInitializer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI endGameText;
     [SerializeField] private Image endGameImage;
 
+    [SerializeField] private Timer timer;
+
     public bool isInitialized = false;
 
     void Start()
@@ -70,11 +72,13 @@ public class BlockInitializer : MonoBehaviour
 
         revealedBlockCount = 0;
         isInitialized = false;
+        timer.ResetClock();
     }
 
     public void InitiallizeBlocks(int blockRow, int blockCol)
     {
         isInitialized = true;
+        timer.StartClock();
 
         int currentBombs = 0;
 
@@ -258,5 +262,6 @@ public class BlockInitializer : MonoBehaviour
         endGameText.transform.parent.gameObject.SetActive(true);
         endGameText.text = win ? "You Won!" : "You Lost!";
         endGameImage.color = win ? Color.green : Color.red;
+        timer.StopClock(win);
     }
 }
